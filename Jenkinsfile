@@ -17,8 +17,8 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                bat 'docker rm -f online-event-management 2>NUL || ver >NUL'
-                bat 'docker run -d --name online-event-management -p 8081:80 online-event-management:1.0'
+                bat 'docker rm -f online-event-management-ci 2>NUL || ver >NUL'
+                bat 'docker run -d --name online-event-management-ci -p 8082:80 online-event-management:1.0'
             }
         }
 
@@ -37,7 +37,7 @@ pipeline {
 
     post {
         always {
-            bat 'docker rm -f online-event-management 2>NUL || ver >NUL'
+            bat 'docker rm -f online-event-management-ci 2>NUL || ver >NUL'
         }
     }
 }
