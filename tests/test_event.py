@@ -83,13 +83,36 @@ class EventTests(unittest.TestCase):
         self.wait_message("Login successful")
         self.assertTrue(self.driver.find_element(By.ID, "dashboard").is_displayed())
 
+
     def test_07_registered_event_is_visible(self):
         self.create_student()
         self.go("events")
-        self.driver.find_element(By.CSS_SELECTOR, ".join").click()
+
+        join_button = self.wait.until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "#event-list .join")
+            )
+        )
+        join_button.click()
+
         self.wait_message("Registration confirmed")
-        self.go("dashboard")
-        self.assertIn("Tech Innovation Summit", self.driver.find_element(By.ID, "my-registrations").text)
+
+        # Open dashboard directly using the JavaScript function.
+        self.driver.execute_script("go('dashboard')")
+
+        self.wait.until(
+            EC.text_to_be_present_in_element(
+                (By.ID, "my-registrations"),
+                "Tech Innovation Summit"
+            )
+        )
+
+        self.assertIn(
+            "Tech Innovation Summit",
+            self.driver.find_element(By.ID, "my-registrations").text
+        )
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
